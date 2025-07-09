@@ -55,3 +55,9 @@ Visit [http://127.0.0.1:5000](http://127.0.0.1:5000) to use the app.
 ---
 
 Let me know if you want a `Dockerfile` or deployment instructions added too.
+
+### Online database
+
+  ```bash
+export DATABASE_URL="postgresql://postgres:yourpassword@db.xxxx.supabase.co:5432/postgres"
+  ```
