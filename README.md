@@ -61,3 +61,8 @@ Let me know if you want a `Dockerfile` or deployment instructions added too.
   ```bash
 export DATABASE_URL="postgresql://postgres:yourpassword@db.xxxx.supabase.co:5432/postgres"
   ```
+
+  ```poweshell
+  $env:DATABASE_URL="postgresql://postgres:4foo!QM74R2*@db.bpxxugxbxwrcvcghreco.supabase.co:5432/postgres"
+  ```
+  
