@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from models import db, Ingredient, Recipe, RecipeIngredient, ShoppingItem
+import os
 
 def create_app():
     app = Flask(__name__)
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///shopping.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///shopping.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
 
