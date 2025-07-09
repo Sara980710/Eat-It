@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Recipes</h1>
+<a href="{{ url_for('recipe_new') }}">+ Add New Recipe</a>
+<ul>
+  {% for recipe in recipes %}
+    <li>
+      <strong>{{ recipe.name }}</strong>
+      <button onclick="addToShopping({{ recipe.id }})">Add ingredients to shopping list</button>
+      <span class="inline-msg" id="msg-{{ recipe.id }}"></span>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

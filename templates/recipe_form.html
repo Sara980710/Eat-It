@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>New Recipe</h1>
+
+<form method="POST" action="{{ url_for('recipe_create') }}">
+  <label for="name">Recipe Name:</label><br />
+  <input type="text" id="name" name="name" required /><br /><br />
+
+  <label for="description">Description:</label><br />
+  <textarea id="description" name="description"></textarea><br /><br />
+
+  <label>Ingredients:</label>
+  <p><em>Fill in ingredient name, quantity, and unit. Add or remove rows as needed.</em></p>
+  <table id="ingredients-table">
+    <thead>
+      <tr>
+        <th>Ingredient</th><th>Quantity</th><th>Unit</th><th></th>
+      </tr>
+    </thead>
+    <tbody id="ingredients-body">
+      <!-- Ingredient rows will go here -->
+    </tbody>
+  </table>
+  <button type="button" onclick="addIngredientRow()">+ Add Ingredient</button>
+  <br /><br />
+
+  <button type="submit">Add Recipe</button>
+</form>
+
+<script>
+  function addIngredientRow(name = '', quantity = '', unit = '') {
+    const tbody = document.getElementById('ingredients-body');
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+        <td><input name="ingredient_name" type="text" required value="${name}"></td>
+        <td><input name="ingredient_quantity" type="number" step="any" min="0" value="${quantity}"></td>
+        <td><input name="ingredient_unit" type="text" value="${unit}"></td>
+        <td><button type="button" onclick="removeIngredientRow(this)">Remove</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    // Focus the ingredient name input
+    tr.querySelector('input[name="ingredient_name"]').focus();
+    }
+
+  function removeIngredientRow(button) {
+    const tr = button.closest('tr');
+    tr.remove();
+  }
+
+  // Start with one empty row
+  window.onload = () => addIngredientRow();
+
+  // Before form submit, convert rows into JSON to send in a hidden input
+  const form = document.querySelector('form');
+  form.addEventListener('submit', e => {
+    const ingredients = [];
+    const tbody = document.getElementById('ingredients-body');
+    for (const tr of tbody.querySelectorAll('tr')) {
+      const name = tr.querySelector('input[name="ingredient_name"]').value.trim();
+      const quantity = tr.querySelector('input[name="ingredient_quantity"]').value.trim();
+      const unit = tr.querySelector('input[name="ingredient_unit"]').value.trim();
+      if (name) {
+        ingredients.push({
+          name,
+          quantity: quantity ? parseFloat(quantity) : null,
+          unit,
+        });
+      }
+    }
+    // Put JSON string into a hidden field
+    let hidden = document.getElementById('ingredients-json');
+    if (!hidden) {
+      hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = 'ingredients_json';
+      hidden.id = 'ingredients-json';
+      form.appendChild(hidden);
+    }
+    hidden.value = JSON.stringify(ingredients);
+  });
+</script>
+
+{% endblock %}

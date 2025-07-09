@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Shopping List</h1>
+<button class="clear-checked" onclick="clearChecked()">🗑️ Clear Checked Items</button>
+<ul>
+  {% for item in items %}
+    <li>
+      <input type="checkbox" onchange="toggleCheck({{ item.id }})" {% if item.is_checked %}checked{% endif %} />
+      {{ item.quantity or '' }} {{ item.unit or '' }} {{ item.ingredient.name }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
