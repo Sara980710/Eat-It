@@ -83,21 +83,20 @@ def create_app():
         recipe = Recipe.query.get_or_404(recipe_id)
         items = ShoppingItem.query.all()
         for ri in recipe.ingredients:
+            quantity = ri.quantity
             # Check if the ingredient is already in the shopping list
-            item_exists = False
             for item in items:
                 if item.ingredient_id == ri.ingredient.idm and item.unit == ri.unit:
-                    item.quantity += ri.quantity
-                    item_exists = True
+                    quantity += ri.quantity
+                    db.session.delete(item)  # Remove existing item to update quantity
                     break
-            if not item_exists:
-                db.session.add(
-                    ShoppingItem(
-                        ingredient=ri.ingredient,
-                        quantity=ri.quantity,
-                        unit=ri.unit,
-                    )
+            db.session.add(
+                ShoppingItem(
+                    ingredient=ri.ingredient,
+                    quantity=quantity,
+                    unit=ri.unit,
                 )
+            )
         db.session.commit()
         return jsonify({"status": "added"})
 
