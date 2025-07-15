@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ recipe.name }}</title>
+</head>
+<body>
+    <h1>{{ recipe.name }}</h1>
+    <p><strong>Description:</strong> {{ recipe.description }}</p>
+
+    <h2>Ingredients:</h2>
+    <ul>
+        {% for ri in recipe.ingredients %}
+            <li>{{ ri.quantity }} {{ ri.unit }} - {{ ri.ingredient.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Instructions:</h2>
+    <p>{{ recipe.instructions }}</p>
+
+    <a href="{{ url_for('index') }}">← Back to all recipes</a>
+</body>
+</html>

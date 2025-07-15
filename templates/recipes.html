@@ -5,9 +5,16 @@
 <ul>
   {% for recipe in recipes %}
     <li>
-      <strong>{{ recipe.name }}</strong>
+      <strong>
+        <li>
+          <a href="{{ url_for('recipe_detail', recipe_id=recipe.id) }}">
+              {{ recipe.name }}
+          </a>
+        </li>
+      </strong>
       <button onclick="addToShopping({{ recipe.id }})">Add ingredients to shopping list</button>
       <span class="inline-msg" id="msg-{{ recipe.id }}"></span>
+    </ul>
     </li>
   {% endfor %}
 </ul>

@@ -21,6 +21,11 @@ def create_app():
         return redirect(url_for("recipe_list"))
 
     # ────────────────────────── Recipe routes ──────────────────────────
+    @app.route('/recipe/<int:recipe_id>')
+    def recipe_detail(recipe_id):
+        recipe = Recipe.query.get_or_404(recipe_id)
+        return render_template('recipe_detail.html', recipe=recipe)
+
     @app.route("/recipes")
     def recipe_list():
         recipes = Recipe.query.all()
