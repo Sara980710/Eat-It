@@ -81,14 +81,23 @@ def create_app():
     @app.route("/shopping-list/add-from-recipe/<int:recipe_id>", methods=["POST"])
     def add_from_recipe(recipe_id):
         recipe = Recipe.query.get_or_404(recipe_id)
+        items = ShoppingItem.query.all()
         for ri in recipe.ingredients:
-            db.session.add(
-                ShoppingItem(
-                    ingredient=ri.ingredient,
-                    quantity=ri.quantity,
-                    unit=ri.unit,
+            # Check if the ingredient is already in the shopping list
+            item_exists = False
+            for item in items:
+                if item.ingredient_id == ri.ingredient.idm and item.unit == ri.unit:
+                    item.quantity += ri.quantity
+                    item_exists = True
+                    break
+            if not item_exists:
+                db.session.add(
+                    ShoppingItem(
+                        ingredient=ri.ingredient,
+                        quantity=ri.quantity,
+                        unit=ri.unit,
+                    )
                 )
-            )
         db.session.commit()
         return jsonify({"status": "added"})
 
