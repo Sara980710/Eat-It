@@ -81,10 +81,10 @@ def create_app():
     @app.route("/shopping-list/add-from-recipe/<int:recipe_id>", methods=["POST"])
     def add_from_recipe(recipe_id):
         recipe = Recipe.query.get_or_404(recipe_id)
-        items = ShoppingItem.query.all()
         for ri in recipe.ingredients:
             quantity = ri.quantity
             # Check if the ingredient is already in the shopping list
+            items = ShoppingItem.query.all()
             for item in items:
                 if item.ingredient_id == ri.ingredient.idm and item.unit == ri.unit:
                     quantity += ri.quantity
